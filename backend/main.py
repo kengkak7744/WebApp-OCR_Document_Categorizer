@@ -3,7 +3,7 @@ from fastapi.security import OAuth2PasswordRequestForm
 from pydantic import BaseModel
 from database import users_collection, documents_collection
 from auth import get_password_hash, verify_password, create_access_token, get_current_user
-from ocr_engine import process_image, categorize_text
+from ocr_engine import process_file, categorize_text
 from datetime import datetime
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -53,7 +53,7 @@ async def upload_document(
 ):
     contents = await file.read()
     
-    extracted_text = process_image(contents)
+    extracted_text = process_file(contents, file.filename)
     categories = categorize_text(extracted_text)
     
     doc_data = {
