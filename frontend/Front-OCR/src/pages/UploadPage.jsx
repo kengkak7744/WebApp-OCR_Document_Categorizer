@@ -7,6 +7,7 @@ const UploadPage = () => {
   const [file, setFile] = useState(null);
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [autoCrop, setAutoCrop] = useState(true);
   const { logout } = useContext(AuthContext);
   const navigate = useNavigate();
 
@@ -16,6 +17,8 @@ const UploadPage = () => {
     
     const formData = new FormData();
     formData.append("file", file);
+    console.log(autoCrop)
+    formData.append("use_auto_crop", autoCrop.toString());
 
     try {
       const response = await api.post("/upload-document", formData);
@@ -42,6 +45,17 @@ const UploadPage = () => {
 
       <div style={{ marginBottom: "20px" }}>
         <input type="file" onChange={(e) => setFile(e.target.files[0])} accept="image/*,application/pdf" />
+        <div style={{ marginTop: "10px", display: "flex", alignItems: "center", gap: "10px" }}>
+            <label style={{ cursor: "pointer", display: "flex", alignItems: "center" }}>
+                <input 
+                    type="checkbox" 
+                    checked={autoCrop} 
+                    onChange={(e) => setAutoCrop(e.target.checked)}
+                    style={{ width: "20px", height: "20px", marginRight: "8px" }}
+                />
+                เปิดใช้งาน Auto-Crop (บางรูปที่ขาวมากๆไม่สามารถใช้งานได้)
+            </label>
+        </div>
         <button onClick={handleUpload} disabled={loading || !file} style={{ marginLeft: "10px", padding: "8px 15px" }}>
           {loading ? "Processing..." : "Process OCR"}
         </button>
@@ -57,14 +71,14 @@ const UploadPage = () => {
                 <img src={result.original_image} alt="Original" style={{ width: "100%", border: "1px solid #ccc", borderRadius: "8px" }} />
               </div>
             )}
-            {result.cropped_image && (
-               <div style={{ flex: 1, minWidth: "300px" }}>
-               <h3>Cropped Document:</h3>
-               {result.original_image !== result.cropped_image ? (
-                  <img src={result.cropped_image} alt="Cropped" style={{ width: "100%", border: "2px solid #1890ff", borderRadius: "8px" }} />
-               ) : <p style={{color: '#666'}}>*(PDF file showing first page)*</p>}
-             </div>
-            )}
+              {result.cropped_image && (
+                <div style={{ flex: 1, minWidth: "300px" }}>
+                <h3>Cropped Document:</h3>
+                {result.original_image !== result.cropped_image ? (
+                    <img src={result.cropped_image} alt="Cropped" style={{ width: "100%", border: "2px solid #1890ff", borderRadius: "8px" }} />
+                ) : <p style={{color: '#666'}}>*(PDF file showing first page)*</p>}
+              </div>
+              )}
           </div>
 
           <h3>Extraction Result:</h3>

@@ -40,7 +40,7 @@ def image_to_text_logic(image_numpy):
     raw_text = pytesseract.image_to_string(thresh, lang='tha+eng', config='--psm 6')
     return raw_text
 
-def process_file(file_bytes, filename):
+def process_file(file_bytes, filename, use_auto_crop):
     full_text = ""
     original_img_np = None
     cropped_img_np = None
@@ -61,7 +61,12 @@ def process_file(file_bytes, filename):
         original_img_np = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
         if original_img_np is None: return "Error decoding", None, None
 
-        cropped_img_np = auto_crop_document(original_img_np)
+        print(use_auto_crop)
+        if use_auto_crop:
+            cropped_img_np = auto_crop_document(original_img_np)
+        else:
+            cropped_img_np = original_img_np
+
         full_text = image_to_text_logic(cropped_img_np)
 
     if has_thai_characters(full_text):

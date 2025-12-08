@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, UploadFile, File
+from fastapi import APIRouter, Depends, UploadFile, File, Form
 from database import documents_collection
 from auth import get_current_user
 from datetime import datetime
@@ -10,11 +10,14 @@ router = APIRouter()
 @router.post("/upload-document")
 async def upload_document(
     file: UploadFile = File(...), 
+    use_auto_crop: str = Form("true"),
     current_user: dict = Depends(get_current_user)
 ):
     contents = await file.read()
-    
-    extracted_text, original_img_np, cropped_img_np = process_file(contents, file.filename)
+    print(f"use_auto_crop = {use_auto_crop}")
+    is_auto_crop = use_auto_crop.lower() == "true"
+    print(f"is_auto_crop = {is_auto_crop}")
+    extracted_text, original_img_np, cropped_img_np = process_file(contents, file.filename, is_auto_crop)
     categories = categorize_text(extracted_text)
     
     original_b64 = encode_image_to_base64(original_img_np)
