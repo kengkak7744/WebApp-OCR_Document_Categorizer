@@ -53,7 +53,7 @@ const UploadPage = () => {
         <div className="toggle-container">
             <label style={{ cursor: "pointer", display: "flex", alignItems: "center" }}>
                 <input type="checkbox" checked={autoCrop} onChange={(e) => setAutoCrop(e.target.checked)} style={{ marginRight: "8px" }} />
-                  ปิดใช้งาน Auto-Crop
+                  เปิดใช้งาน Auto-Crop (บางรูปที่ขาวมากๆไม่สามารถใช้งานได้)
             </label>
         </div>
 
@@ -79,7 +79,7 @@ const UploadPage = () => {
             )}
           </div>
 
-          <h3>Extraction Result:</h3>
+          <h3>Extraction Result: {result.categories?.Type}</h3>
           <div className="text-result-box">
             {result.extracted_text}
           </div>

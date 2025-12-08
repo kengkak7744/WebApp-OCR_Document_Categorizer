@@ -86,7 +86,7 @@ const HistoryPage = () => {
                             </span>
                         </div>
                         
-                        <h4 style={{ margin: "0 0 10px 0", fontSize: "16px", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }} title={doc.filename}>
+                        <h4 style={{ margin: "0 0 10px 0", fontSize: "16px", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", color: "#5e5e5eff"}} title={doc.filename}>
                             {doc.filename}
                         </h4>
                         
