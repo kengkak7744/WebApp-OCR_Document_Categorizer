@@ -10,7 +10,18 @@ const UploadPage = () => {
   const navigate = useNavigate();
 
   const handleUpload = async () => {
-    console.log("brah brah")
+    if (!file) return;
+    
+    const formData = new FormData();
+    formData.append("file", file);
+
+    try {
+      const response = await api.post("/upload-document", formData);
+      setResult(response.data);
+    } catch (error) {
+      console.error(error);
+      alert("อัปโหลดล้มเหลว หรือ Token หมดอายุ");
+    }
   };
 
   const handleLogout = () => {
@@ -33,7 +44,7 @@ const UploadPage = () => {
           <h3>ผลลัพธ์:</h3>
           <p><strong>ประเภทเอกสาร:</strong> {result.categories?.Type}</p>
           <p><strong>ข้อความที่อ่านได้:</strong></p>
-          <pre style={{ background: "#f0f0f0", padding: "10px" }}>
+          <pre style={{ background: "#000000", padding: "10px" }}>
             {result.extracted_text}
           </pre>
         </div>

@@ -3,6 +3,7 @@ from fastapi.security import OAuth2PasswordRequestForm
 from pydantic import BaseModel
 from database import users_collection, documents_collection
 from auth import get_password_hash, verify_password, create_access_token, get_current_user
+from ocr_engine import process_image, categorize_text
 from datetime import datetime
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -14,7 +15,7 @@ class UserCreate(BaseModel):
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173"], # พอร์ตมาตรฐานของ React Vite
+    allow_origins=["http://localhost:5173"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -45,3 +46,30 @@ async def login(form_data: OAuth2PasswordRequestForm = Depends()):
     access_token = create_access_token(data={"sub": user["username"]})
     return {"access_token": access_token, "token_type": "bearer"}
 
+@app.post("/upload-document")
+async def upload_document(
+    file: UploadFile = File(...), 
+    current_user: dict = Depends(get_current_user)
+):
+    contents = await file.read()
+    
+    extracted_text = process_image(contents)
+    categories = categorize_text(extracted_text)
+    
+    doc_data = {
+        "owner": current_user["username"],
+        "filename": file.filename,
+        "upload_date": datetime.now(),
+        "extracted_text": extracted_text,
+        "categories": categories
+    }
+    
+    result = documents_collection.insert_one(doc_data)
+    
+    return {
+        "id": str(result.inserted_id),
+        "status": "success",
+        "text_preview": extracted_text[:100] + "...",
+        "categories": categories,
+        "extracted_text": extracted_text
+    }
