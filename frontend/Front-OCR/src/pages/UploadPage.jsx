@@ -19,7 +19,6 @@ const UploadPage = () => {
     
     const formData = new FormData();
     formData.append("file", file);
-    console.log(autoCrop)
     formData.append("use_auto_crop", autoCrop.toString());
 
     try {
