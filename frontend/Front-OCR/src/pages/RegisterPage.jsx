@@ -1,6 +1,7 @@
 import { useState } from "react";
 import api from "../services/api";
 import { useNavigate, Link } from "react-router-dom";
+import "../App.css";
 
 const RegisterPage = () => {
   const [username, setUsername] = useState("");
@@ -35,47 +36,52 @@ const RegisterPage = () => {
   };
 
   return (
-    <div style={{ padding: "50px", textAlign: "center" }}>
-      <h2>สมัครสมาชิกใหม่</h2>
-      <form onSubmit={handleRegister}>
-        <div>
-          <input
-            type="text"
-            placeholder="Username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            required
-            style={{ padding: "8px", margin: "5px" }}
-          />
-        </div>
-        <div>
-          <input
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-            style={{ padding: "8px", margin: "5px" }}
-          />
-        </div>
-        <div>
-          <input
-            type="password"
-            placeholder="Confirm Password"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-            required
-            style={{ padding: "8px", margin: "5px" }}
-          />
-        </div>
+    <div className="main-container">
+      <div className="auth-container">
+        <h2>สมัครสมาชิกใหม่</h2>
         
-        <button type="submit" style={{ marginTop: "20px", padding: "10px 20px" }}>
-          ยืนยันการสมัคร
-        </button>
-      </form>
+        <form onSubmit={handleRegister} className="auth-form">
+          <div>
+            <label style={{ display: "block", textAlign: "left", marginBottom: "5px", fontWeight: "bold" }}>Username</label>
+            <input
+              type="text"
+              placeholder="ตั้งชื่อผู้ใช้งาน"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              required
+            />
+          </div>
 
-      <div style={{ marginTop: "20px" }}>
-        <p>มีบัญชีอยู่แล้ว? <Link to="/">เข้าสู่ระบบที่นี่</Link></p>
+          <div>
+            <label style={{ display: "block", textAlign: "left", marginBottom: "5px", fontWeight: "bold" }}>Password</label>
+            <input
+              type="password"
+              placeholder="ตั้งรหัสผ่าน"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+          </div>
+
+          <div>
+            <label style={{ display: "block", textAlign: "left", marginBottom: "5px", fontWeight: "bold" }}>Confirm Password</label>
+            <input
+              type="password"
+              placeholder="ยืนยันรหัสผ่านอีกครั้ง"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              required
+            />
+          </div>
+          
+          <button type="submit" className="btn btn-primary" style={{ width: "100%", marginTop: "20px" }}>
+            ยืนยันการสมัคร
+          </button>
+        </form>
+
+        <div style={{ marginTop: "20px" }}>
+          <p>มีบัญชีอยู่แล้ว? <Link to="/" style={{ color: "#1890ff", fontWeight: "bold" }}>เข้าสู่ระบบที่นี่</Link></p>
+        </div>
       </div>
     </div>
   );

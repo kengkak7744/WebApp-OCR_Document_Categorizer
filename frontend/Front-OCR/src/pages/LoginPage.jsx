@@ -1,6 +1,7 @@
 import { useState, useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { useNavigate, Link } from "react-router-dom";
+import "../App.css";
 
 const LoginPage = () => {
   const [username, setUsername] = useState("");
@@ -20,28 +21,24 @@ const LoginPage = () => {
   };
 
   return (
-    <div style={{ padding: "50px", textAlign: "center" }}>
+    <div className="auth-container">
       <h2>เข้าสู่ระบบ OCR System</h2>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className="auth-form">
         <div>
           <input 
-            type="text" 
-            placeholder="Username" 
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            style={{ padding: "8px", margin: "5px" }}
+            type="text" placeholder="Username" 
+            value={username} onChange={(e) => setUsername(e.target.value)}
           />
         </div>
-        <div style={{ marginTop: "10px" }}>
+        <div>
           <input 
-            type="password" 
-            placeholder="Password" 
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            style={{ padding: "8px", margin: "5px" }}
+            type="password" placeholder="Password" 
+            value={password} onChange={(e) => setPassword(e.target.value)}
           />
         </div>
-        <button type="submit" style={{ marginTop: "20px", padding: "10px 20px" }}>Login</button>
+        <button type="submit" className="btn btn-primary" style={{ width: "100%", marginTop: "10px" }}>
+          Login
+        </button>
       </form>
       <div style={{ marginTop: "20px" }}>
         <p>ยังไม่มีบัญชี? <Link to="/register">สมัครสมาชิกที่นี่</Link></p>
@@ -49,5 +46,4 @@ const LoginPage = () => {
     </div>
   );
 };
-
 export default LoginPage;
