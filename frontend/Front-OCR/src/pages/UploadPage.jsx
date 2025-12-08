@@ -1,7 +1,7 @@
 import { useState, useContext } from "react";
 import api from "../services/api";
 import { AuthContext } from "../context/AuthContext";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 const UploadPage = () => {
   const [file, setFile] = useState(null);
@@ -40,7 +40,16 @@ const UploadPage = () => {
     <div style={{ padding: "20px", maxWidth: "800px", margin: "0 auto" }}>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "20px" }}>
         <h2>Upload Document (Auto-Crop)</h2>
-        <button onClick={handleLogout} style={{ background: "#ff4d4f", color: "white", border: "none", padding: "8px 15px", borderRadius: "4px", cursor: "pointer" }}>Logout</button>
+        <div style={{ display: "flex", gap: "10px" }}>
+        <Link to="/history">
+            <button style={{ background: "#52c41a", color: "white", border: "none", padding: "8px 15px", borderRadius: "4px", cursor: "pointer" }}>
+                History
+            </button>
+        </Link> 
+        <button onClick={handleLogout} style={{ background: "#ff4d4f", color: "white", border: "none", padding: "8px 15px", borderRadius: "4px", cursor: "pointer" }}>
+            Logout
+        </button>
+    </div>
       </div>
 
       <div style={{ marginBottom: "20px" }}>

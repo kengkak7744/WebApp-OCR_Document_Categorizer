@@ -25,7 +25,6 @@ const RegisterPage = () => {
       alert("สมัครสมาชิกสำเร็จ! กรุณาเข้าสู่ระบบ");
       navigate("/"); 
     } catch (error) {
-      // 4. ถ้า Error (เช่น ชื่อซ้ำ)
       if (error.response && error.response.status === 400) {
         alert("Username นี้มีคนใช้แล้ว กรุณาเปลี่ยนชื่อใหม่");
       } else {

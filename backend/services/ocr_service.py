@@ -25,11 +25,17 @@ def has_thai_characters(text):
     return bool(re.search(r'[\u0E00-\u0E7F]', text))
 
 def categorize_text(text):
-    invoice_keywords = ["ใบเสร็จ", "invoice", "receipt", "tax invoice", "ยอดรวม", "total"]
+    invoice_keywords = ["ใบเสร็จ", "invoice", "receipt", "tax invoice", "ยอดรวม", "total", "ชำระเงิน", "ใบสำคัญรับเงิน"]
+    contract_keywords = ["สัญญา", "contract", "agreement", "บันทึกข้อตกลง", "ลงนาม"]
+    id_card_keywords = ["บัตรประจำตัวประชาชน", "identity card", "วันเกิด", "date of birth"]
     text_lower = text.lower()
     categories = {}
     if any(word in text_lower for word in invoice_keywords):
         categories["Type"] = "Invoice"
+    elif any(word in text_lower for word in contract_keywords):
+        categories["Type"] = "Contract"
+    elif any(word in text_lower for word in id_card_keywords):
+        categories["Type"] = "IDcard"
     else:
         categories["Type"] = "General Document"
     return categories
@@ -61,7 +67,6 @@ def process_file(file_bytes, filename, use_auto_crop):
         original_img_np = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
         if original_img_np is None: return "Error decoding", None, None
 
-        print(use_auto_crop)
         if use_auto_crop:
             cropped_img_np = auto_crop_document(original_img_np)
         else:
