@@ -81,6 +81,26 @@ const UploadPage = () => {
 
           <h3>Extraction Result: {result.categories?.Type}</h3>
           <div className="text-result-box">
+            <strong>Type:</strong> 
+            <span style={{ color: "#1890ff", fontWeight: "bold" }}> {result.extracted_data.DocumentType}</span>
+            <strong> Date:</strong> 
+            <span> {result.extracted_data.Date || "-"}</span><br />
+            
+            <strong>Total:</strong> 
+            <span> {result.extracted_data.TotalAmount || "-"}</span><br />
+            
+            <strong>Email:</strong> 
+            <span> {result.extracted_data.Email || "-"}</span><br />
+            
+            <strong>Phone:</strong> 
+            <span> {result.extracted_data.Phone || "-"}</span><br />
+
+            <strong>ID-Number:</strong> 
+            <span> {result.extracted_data.ID_Number || "-"}</span><br />
+
+            <strong>Name:</strong> 
+            <span> {result.extracted_data.Name || "-"}</span>
+
             {result.extracted_text}
           </div>
         </div>

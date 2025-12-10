@@ -90,8 +90,26 @@ const HistoryPage = () => {
                             {doc.filename}
                         </h4>
                         
-                        <p style={{ fontSize: "14px", color: "#666", height: "40px", overflow: "hidden", display: "-webkit-box", WebkitLineClamp: "2", WebkitBoxOrient: "vertical", margin: 0 }}>
-                            {doc.extracted_text || "(ไม่พบข้อความ)"}
+                        <p style={{ fontSize: "14px", color: "#666", height: "130px", overflow: "hidden", display: "-webkit-box", WebkitLineClamp: "2", WebkitBoxOrient: "vertical", margin: 0 }}>
+                            <strong>Type:</strong> 
+                            <span style={{ color: "#1890ff", fontWeight: "bold" }}> {doc.extracted_data.DocumentType}</span>
+                            <strong> Date:</strong> 
+                            <span> {doc.extracted_data.Date || "-"}</span><br />
+                            
+                            <strong>Total:</strong> 
+                            <span> {doc.extracted_data.TotalAmount || "-"}</span><br />
+                            
+                            <strong>Email:</strong> 
+                            <span> {doc.extracted_data.Email || "-"}</span><br />
+                            
+                            <strong>Phone:</strong> 
+                            <span> {doc.extracted_data.Phone || "-"}</span><br />
+
+                            <strong>ID-Number:</strong> 
+                            <span> {doc.extracted_data.ID_Number || "-"}</span><br />
+
+                            <strong>Name:</strong> 
+                            <span> {doc.extracted_data.Name || "-"}</span>
                         </p>
                     </div>
                 </div>

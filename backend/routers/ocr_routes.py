@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, UploadFile, File, Form, HTTPException, s
 from database import documents_collection
 from auth import get_current_user
 from datetime import datetime
-from services.ocr_service import process_file, categorize_text
+from services.ocr_service import process_file, categorize_text, extract_data_fields
 from services.image_processing import encode_image_to_base64
 from typing import Optional
 from bson import ObjectId
@@ -19,6 +19,8 @@ async def upload_document(
     is_auto_crop = use_auto_crop.lower() == "true"
     extracted_text, original_img_np, cropped_img_np = process_file(contents, file.filename, is_auto_crop)
     categories = categorize_text(extracted_text)
+    doc_type = categories.get("Type", "General Document")
+    extracted_data = extract_data_fields(extracted_text, doc_type)
     
     original_b64 = encode_image_to_base64(original_img_np)
     cropped_b64 = encode_image_to_base64(cropped_img_np)
@@ -29,7 +31,7 @@ async def upload_document(
         "owner": current_user["username"],
         "filename": file.filename,
         "upload_date": datetime.now(),
-        "extracted_text": extracted_text,
+        "extracted_data": extracted_data,
         "categories": categories,
         "display_image": image_to_save,
     }
@@ -40,6 +42,7 @@ async def upload_document(
         "id": str(result.inserted_id),
         "status": "success",
         "extracted_text": extracted_text,
+        "extracted_data": extracted_data,
         "categories": categories,
         "original_image": original_b64,
         "cropped_image": cropped_b64
@@ -64,7 +67,7 @@ async def get_documents(
             "filename": doc["filename"],
             "upload_date": doc["upload_date"],
             "categories": doc["categories"],
-            "extracted_text": doc.get("extracted_text", ""),
+            "extracted_data": doc.get("extracted_data", ""),
             "display_image": doc.get("display_image") or doc.get("cropped_image")
         })
     return documents
